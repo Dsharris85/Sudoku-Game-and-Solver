@@ -13,7 +13,6 @@ namespace SudokuGUI
     public partial class HighScorePrompts : Form
     {
         Form1 _parent;
-
         public HighScorePrompts(Form1 par)
         {
             InitializeComponent();

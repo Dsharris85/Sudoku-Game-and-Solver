@@ -17,7 +17,6 @@ namespace SudokuGUI
         private List<List<Label>> _tiles = new List<List<Label>>();
         private Solver _solver = new Solver();
         private Timer _timer = new Timer();
-        //private Scores _highScores;
 
         private int[,] _board;
         private int[,] _startingBoard;
@@ -65,22 +64,18 @@ namespace SudokuGUI
                 }
             }
         }
-
         public void LoadGame(string game)
         {
             _timer.Start();
             label2.ForeColor = Color.Red;
             label2.Text = " ";
             int[,] arr = new int[9, 9];
-            Debug.WriteLine(game[0]);
             for (int i = 0; i < 9; i++)
             {
                 for (int j = 0; j < 9; j++)
                 {
                     _tiles[i][j].BackColor = SystemColors.ButtonFace;
-                    //arr[i, j] = (int)(game[(i*9)+j]);
                     arr[i,j] = (int)Char.GetNumericValue(game[(i * 9) + j]);
-                    Debug.WriteLine(game[(i*9)+j]);
                 }
             }
             _solver.PrintBoard(arr);
@@ -212,18 +207,14 @@ namespace SudokuGUI
             if (!helped)
             {
                 bool high = CheckIfHighScore();
-                //Debug.WriteLine(high);
                 if (high)
                 {
                     HighScorePrompts prompt = new HighScorePrompts(this);
                     this.Hide();
                     prompt.Show();
-                }
-               
+                }               
             }
-
         }
-
         private string CopyBoardToWrite()
         {
             string bo = "";
@@ -232,9 +223,7 @@ namespace SudokuGUI
                 for (int j = 0; j < 9; j++)
                 {
                     bo += _startingBoard[i, j].ToString();
-                    //bo += ",";
                 }
-                //bo += System.Environment.NewLine;
             }
             return bo;
         }
@@ -261,8 +250,7 @@ namespace SudokuGUI
                     int difficulty = Int32.Parse(elements[1]);
                     int time = Int32.Parse(elements[2]);
 
-                    // if same difficulty and shorter time...
-                    
+                    // if same or less difficulty and shorter time...                    
                     if (difficulty <= this.trackBar1.Value & _timeInSec < time & added == false)
                     {
                         arr.Add($"{_initials} {this.trackBar1.Value} {_timeInSec} {bo}");
@@ -273,12 +261,9 @@ namespace SudokuGUI
                         arr.Add(line);
                     }                    
                 }
-                //arr = arr.OrderBy(x => x[4]).ToList();
                 File.WriteAllLines(SaveFile, arr);
             }
-
         }
-
         private bool CheckIfHighScore()
         {
             List<string> lines = File.ReadAllLines(SaveFile).ToList();
@@ -291,8 +276,6 @@ namespace SudokuGUI
             // leaderboard filled, check if replace need
             foreach (string line in lines)
             {
-                Debug.WriteLine(line);
-
                 String[] elements = line.Split(' ');
                 int difficulty = Int32.Parse(elements[1]);
 
@@ -305,10 +288,8 @@ namespace SudokuGUI
                     }
                 }
             }
-
             return false;
         }
-
         // SOLVE
         private void button3_Click(object sender, EventArgs e)
         {
@@ -347,8 +328,6 @@ namespace SudokuGUI
                     _tiles[i][j].BackColor = SystemColors.ButtonFace;
                 }
             }
-            Debug.WriteLine(this.trackBar1.Value);
-
             label1.Text = "Time = 0:0";
 
             _board = _solver.RandomBoard(this.trackBar1.Value);
@@ -365,17 +344,14 @@ namespace SudokuGUI
             {
                 for (int j = 0; j < 9; j++)
                 {
-                    //Debug.WriteLine(bo[i, j].ToString());
                     if (bo[i, j] == 0)
                     {
                         _tiles[i][j].Text = " ";
                     }
                     else
-                    {
-                        
+                    {                        
                         _tiles[i][j].Text = bo[i, j].ToString();
                     }
-
                 }
             }
         }
@@ -401,15 +377,12 @@ namespace SudokuGUI
         }
         private void TileMouseClick(object sender, EventArgs e)
         {
-            var lab = sender as Label;
-            Debug.WriteLine(lab.Text);
-    
+            var lab = sender as Label; 
             int loc = lab.GetHashCode();
 
             // look @ each row for label clicked (loc)
             for (int i = 0; i < 9; i++)
             {
-                //labl = _tiles[i].Find(x => x.GetHashCode() == loc); // Label
                 // Check row for label clicked
                 for (int j = 0; j < 9; j++)
                 {
@@ -420,11 +393,8 @@ namespace SudokuGUI
                         _selected[0] = i;
                         _selected[1] = j;
 
-                        if (_board[i,j] == 0) // _startingBoard
-                        {
-                            //if ()
-                            lab.BackColor = SystemColors.Highlight; //blue selected
-                        }
+                        if (_board[i,j] == 0)                      
+                            lab.BackColor = SystemColors.Highlight; //blue selected                        
                         else
                         {
                             _selected[0] = -1;
@@ -434,19 +404,11 @@ namespace SudokuGUI
                     // for every other tile, unhighlight
                     else
                     {
-                        //if (_tiles[i][j].BackColor != Color.LightSeaGreen & _tiles[i][j].BackColor != Color.Red)
-                        //    _tiles[i][j].BackColor = SystemColors.ButtonFace;//white
                         if (_tiles[i][j].BackColor == SystemColors.Highlight)
                             _tiles[i][j].BackColor = SystemColors.ButtonFace;//white
                     }
                 }
             }
-                
-                //lab.BackColor = SystemColors.Highlight; //blue selected
-
-
-            //}
-            
         }
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
@@ -508,13 +470,11 @@ namespace SudokuGUI
                     case Keys.S:
                         if(TrySet(_tiles[x][y], x, y))
                         {
-                            Debug.WriteLine("Save Good");
                             _tiles[x][y].BackColor = SystemColors.ButtonFace;
                         }
                         else
                         {
                             _tiles[x][y].Text = " ";
-                            Debug.WriteLine("Save Bad");
                             _tiles[x][y].BackColor = Color.Red;
 
                             if (label2.Text.Length < 6)
@@ -543,16 +503,11 @@ namespace SudokuGUI
                         {
                             WinGame(false);
                         }
-
-
-                                break;
+                        break;
                     default:                        
                         break;
-
                 }
-                //_tiles[x][y].BackColor = Color.LightSeaGreen;
-            }
-            
+            }            
         }
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
@@ -564,47 +519,28 @@ namespace SudokuGUI
             {
                 // copy of board plus new num to test
                 int[,] arr = CopyBoard(_board);
-                //arr[x, y] = Int32.Parse(lbl.Text);
 
-                //_solver.PrintBoard(_board);
-                Debug.WriteLine($"\n############\n{_board[x,y]}\n#############\n");
                 _solver.PrintBoard(_board);
 
-
-
-                // add num from model board to board
-                // test board
-                // if good:
-                //      board[xy] = model num
-                // else:
-                //      board[xy] = 0
                 if (_solver.ValidBoard(_board, Int32.Parse(lbl.Text), x, y))
-                //if (_solver.ValidBoard(arr, arr[x,y], x,y))
                 {
                     arr[x, y] = Int32.Parse(lbl.Text);
                     Debug.WriteLine("Valid board");
                     if (_solver.SolveBoard(ref arr)) 
-                    { 
+                    {
                         _board[x, y] = Int32.Parse(lbl.Text);
-
-                        Debug.WriteLine("solved and valid!");
-                        //_modelBoard = CopyBoard(_board);
-                        //UpdateTiles(_modelBoard);
                         return true;
                     }
                     else
-                    {
-                        
+                    {                        
                         return false;
                     }
                 }
                 else
                 {
-                    Debug.WriteLine("NOT VALID!");
                     return false;
                 }
             }
-            Debug.WriteLine("not valid space to fill");
             return false;
         }
         //High Scores

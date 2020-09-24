@@ -55,7 +55,6 @@ namespace SudokuGUI
             {
                 if (board[x, i] == num & y != i)
                 {
-                    //Console.WriteLine("bad row");
                     return false;
                 }
             }
@@ -65,7 +64,6 @@ namespace SudokuGUI
             {
                 if (board[i, y] == num & x != i)
                 {
-                    //Console.WriteLine("bad col");
                     return false;
                 }
             }
@@ -79,7 +77,6 @@ namespace SudokuGUI
                 {
                     if (board[i, j] == num & i != y & j != x)
                     {
-                        //Console.WriteLine("bad box");
                         return false;
                     }
                 }

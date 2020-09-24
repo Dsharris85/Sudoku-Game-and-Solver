@@ -14,14 +14,12 @@ namespace SudokuGUI
     public partial class Scores : Form
     {
         private Form1 _parent;
-
         public Scores(Form1 par)
         {
             InitializeComponent();
             _parent = par;
             LoadFileToList();
         }
-
         private void LoadFileToList()
         {
             List<string> lines = File.ReadAllLines(_parent.SaveFile).ToList();
@@ -46,7 +44,6 @@ namespace SudokuGUI
         private void listView1_DoubleClick(object sender, EventArgs e)
         {
             string text = listView1.SelectedItems[0].SubItems[3].Text;
-            Console.WriteLine(text);
             _parent.LoadGame(text);
             _parent.Show();
             this.Close();
