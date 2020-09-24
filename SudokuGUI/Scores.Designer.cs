@@ -86,6 +86,7 @@
             this.ClientSize = new System.Drawing.Size(434, 450);
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.label4);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "Scores";
             this.Text = "Scores";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Scores_FormClosing);
